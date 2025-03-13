@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AWS Hosting Guide</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        .header, .footer {
+            background-color: #FF9900;
+            color: white;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+        }
+        img {
+            width: 100%;
+            max-width: 600px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        img:hover {
+            opacity: 0.8;
+        }
+        .expanded-img {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            justify-content: center;
+            align-items: center;
+        }
+        .expanded-img img {
+            max-width: 90%;
+            max-height: 90%;
+        }
+        .footer a {
+            margin: 0 10px;
+            display: inline-block;
+        }
+        .footer img {
+            width: 40px;
+            height: 40px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>AWS Hosting Guide by Parshuram</h1>
+    </div>
+    
+    <div class="container">
+        <h2>How I Hosted My Typing Speed Test Website on AWS</h2>
+        <p>This guide explains how I used AWS services to host my website with Load Balancer, Auto Scaling, and CloudWatch monitoring etc .</p>
+
+
+        <h2>1. Setting Up EC2 Instance</h2>
+        <p>Launched an EC2 instance, installed dependencies, and deployed my web application.</p>
+        <p>Create EC2 Instance in AWS (Amazon)
+            The following are the steps for creating an EC2 instance in AWS (Amazon):
+            
+            Step 1: First, log into your AWS account and click on “services” present on the left of the AWS management console, i.e. the primary screen. From the drop-down menu of options, tap on “EC2”.</p>
+        <img src="awsec2navigation.png" alt="EC2 Setup" onclick="expandImage(this)">
+
+        <p>Under Resources >> Click on “Instances running” — It will show if any EC2 instances are running or not.
+
+            Step 2: Click on the launch instance click on the launch instance, after clicking on it you will be redirected to a launch page where we can create an instance. Configure all the requirements to Create a new instance like the name of the instance as shown in the figure below.</p>
+
+            <img src="Screenshot_5.png"alt="EC2 Setup" onclick="expandImage(this)">
+
+        <p>Step 3: Select AMI – Required operating system from the available. There are different types of OS available select the OS as per your requirement.</p>
+            <img src="Screenshot_1.png" alt="EC2 Setup" onclick="expandImage(this)">
+            <p>Step 4: By default, it selects a free tier of storage. (IF YOU ARE ELIGIBLE FOR THE FREE TIER). From the available storage specifications, select a free tier-eligible storage service. The instance type includes the no.of CPUs required and the Memory required for your application. By default, the instance type is “t2.micro” which is a free tier-eligible service</p>
+            <img src="Screenshot_3.png" alt="EC2 Setup" onclick="expandImage(this)">
+            <p>Step 4: Now, create a key-value pair, by clicking on “Create new key pair”. A window will pop up for creating key pair as shown below. The key value pair plays a major role while connecting to the EC2-Instance it will act as an SSH-Key to connect to the instance. Create Key-PairEnter name>>Select “.pem” and create. Automatically key pair which was created will be downloaded. Select the created key pair.</p>
+            <img src="Screenshot_4.png" alt="EC2 Setup" onclick="expandImage(this)">
+            <p>Step 5: Keep the network settings as default settings and make changes if required.StorageAs mentioned in the picture, Free tier eligible can get up to 30 GB of EBS Storage. Keep it as default.</p>
+            <img src="Screenshot-01.png" alt="EC2 Setup" onclick="expandImage(this)">
+            <p>Step 6: Launching Instance At last, Check if all the selected are eligible for a free tier or not and click on “Launch instance”.That’s it, an instance will be created.</p>
+            <img src="Screenshot_8.png" alt="EC2 Setup" onclick="expandImage(this)">
+            <p>Steps To Connect Terminal Using SSH-Key
+                Step 1: Select the server to which you want to connect and click on the connect button at the top of that instance as shown in the image below.</p>
+                <img src="00890203-5650-4b8d-9163-ccd1c9b688eb.webp" alt="EC2 Setup" onclick="expandImage(this)">
+                <p>Step 2: Copy the SSH key which is right following the example it will acct as a key-pair to connect to EC2-Instance.</p>
+                <img src="eae88ebf-fea2-46a8-b637-8a36693af993.webp" alt="EC2 Setup" onclick="expandImage(this)">
+                <p>Step 3: Open the terminal and navigate to the directory where the key-pair is downloaded. Use the following command to connect to the EC2-Instance.</p>
+                <img src="17221a11-89b3-4d44-a060-18f3ff7c6edf.webp" alt="EC2 Setup" onclick="expandImage(this)">
+                <p>To know whether you connected to EC2-Instance perfectly or not you can check the IP-Adrees of the instance if the IP is displaying then you have connected successfully.</p>
+
+        <h2>2. Configuring Load Balancer</h2>
+        <p>Step 1: Launch the two instances on the AWS management console named Instance A and Instance B. Go to services and select the load balancer. .</p>
+        <img src="load1.jpg" alt="Load Balancer" onclick="expandImage(this)">
+
+                <p>Step 2: Click on Create the load balancer.</p>
+                <img src="load2.jpg" alt="Load Balancer" onclick="expandImage(this)">
+                <p>Step 3: Select Application Load Balancer and click on Create.</p>
+                <img src="load3.jpg" alt="Load Balancer" onclick="expandImage(this)">
+                <p>Step 4: Here you are required to configure the load balancer. Write the name of the load balancer. Choose the scheme as internet facing</p>
+                <img src="load4.jpg" alt="Load Balancer" onclick="expandImage(this)">
+                <p> Step 5: Add at least 2 availability zones. Select us-east-1a and us-east-1b</p>
+                <img src="load5.jpg" alt="Load Balancer" onclick="expandImage(this)">
+                <p>Step 6: We don’t need to do anything here. Click on Next: Configure Security Groups</p>
+                <img src="load6.jpg" alt="Load Balancer" onclick="expandImage(this)">
+                <p>Step 7: Select the default security group. Click on Next: Configure Routing</p>
+                <img src="load7.jpg" alt="Load Balancer" onclick="expandImage(this)">
+                <p>Step 8: Choose the name of the target group to be my target group. Click on Next: Register Targets.</p>
+                <img src="load8.jpg" alt="Load Balancer" onclick="expandImage(this)">
+                <p>Step 9: Choose instance A and instance B and click on Add to register. Click on Next: Review..</p>
+                <img src="load9.jpg" alt="Load Balancer" onclick="expandImage(this)">
+                <p>Step 10: Review all the configurations and click on create</p>
+                <img src="load10.jpg" alt="Load Balancer" onclick="expandImage(this)">
+                <p>Step 11: Congratulations!! You have successfully created a load balancer. Click on close..</p>
+                <img src="load11.jpg" alt="Load Balancer" onclick="expandImage(this)">
+                <p>Step 12: This highlighted part is the DNS name which when copied in the URL will host the application and will distribute the incoming traffic efficiently between the two instances..</p>
+                <img src="load12.jpg" alt="Load Balancer" onclick="expandImage(this)">
+                <P>Step 13: This is the listener port 80 which listens to all the incoming requests</P>
+                <img src="load13.jpg" alt="Load Balancer" onclick="expandImage(this)">
+                <p>Step 14: This is the target group that we  have created</p>
+                <img src="load14.jpg" alt="Load Balancer" onclick="expandImage(this)">
+                
+
+
+
+
+        <h2>3. Auto Scaling Setup</h2>
+        <p>Step 1: Click on the Create Auto Scaling group..</p>
+        <img src="a1.png" alt="Auto Scaling" onclick="expandImage(this)">
+        <p>Step 2: Type the Auto Scaling group name.</p>
+        <img src="a2.png" alt="Auto Scaling" onclick="expandImage(this)">
+        <p>Step 3: Select your Template.</p>
+        <img src="a3.png" alt="Auto Scaling" onclick="expandImage(this)">
+        <p>Step 4: Select the VPC or go with the default VPC and also select the Availability zone.</p>
+        <img src="a4.png" alt="Auto Scaling" onclick="expandImage(this)">
+        <p>Step 5: Configure the Group size and Scaling policies.
+
+            Select as per your requirement:
+            
+            Desired: 4
+            Minimum: 4
+            Maximum: 8</p>
+        <img src="a5.png" alt="Auto Scaling" onclick="expandImage(this)">
+        <p>Step 6: Select the Target tracking scaling policy.</p>
+        <img src="a6.png" alt="Auto Scaling" onclick="expandImage(this)">
+        <p>Step 7: Click on the Create Auto Scaling Group.</p>
+        <img src="a7.png" alt="Auto Scaling" onclick="expandImage(this)">
+
+
+
+
+
+
+
+        <h2>4. Monitoring with CloudWatch</h2>
+        <p>Set up CloudWatch alarms and logs to track system performance.</p>
+
+                <p>Step 1: In the Search Bar, search for EC2 as shown below.</p>
+                <img src="Screenshot-(301).png" alt="CloudWatch" onclick="expandImage(this)">
+                <p>Step 2: After clicking on EC2 from search bar you will land on EC2 dashboard where all the stuff about EC2 is displayed. Click on Instances.</p>
+                <img src="Screenshot-(302).png" alt="CloudWatch" onclick="expandImage(this)">
+                <p>Step 3: Here you will get all the EC2 which are running, stopped, terminated, etc. Select the one you want to use. Make sure its Running.</p>
+                <img src="Screenshot-(303).png" alt="CloudWatch" onclick="expandImage(this)">
+                <p>Step 4: Go to to tags section where you will found Key-Value pair, note this down somewhere.</p>
+                <img src="Screenshot-(306).png" alt="CloudWatch" onclick="expandImage(this)">
+                <p>Step 5: Again go to search bar, search for Resource Groups.</p>
+                <img src="Screenshot-(304).png" alt="CloudWatch" onclick="expandImage(this)">
+                <p>Step 6: After landing in Resource Groups page, from left side select Create Resource Group. In group type select EC2:Instance.</p>
+                <img src="Screenshot-(305).png" alt="CloudWatch" onclick="expandImage(this)">
+                <p>Step 7: Scroll down you will find Tags section here, select you Key-Value of your EC2 in this tags and select them. You can also select multiple tags if you want.</p>
+                <img src="Screenshot-(307).png" alt="CloudWatch" onclick="expandImage(this)">
+                <p>Step 8: Scroll down more, name your resource group and hit Create Group.</p>
+                <img src="Screenshot-(308).png" alt="CloudWatch" onclick="expandImage(this)">
+                <p>Step 9: If you get message something like shown in image below then you successfully created Resource Group.</p>
+                <img src="Screenshot-(309).png" alt="CloudWatch" onclick="expandImage(this)">
+                <p>Step 10: Now go to search bar and search for Cloudwatch.</p>
+                <img src="Screenshot-(311).png" alt="CloudWatch" onclick="expandImage(this)">
+                <p>Step 11: Select filter from 'Filter by resource group' and select your Resource Group which we made earlier.</p>
+                <img src="Screenshot-(312).png" alt="CloudWatch" onclick="expandImage(this)">
+                <p>Step 14: Scroll down and click on 'View EC2 dashboard' and you will get all the necessary graphs.</p>
+                <img src="Screenshot-(314).png" alt="CloudWatch" onclick="expandImage(this)">
+
+
+
+
+
+
+
+
+    </div>
+
+    <div class="expanded-img" id="expandedImg">
+        <img id="largeImg" src="">
+    </div>
+
+    <div class="footer">
+        
+
+        <a href="https://www.instagram.com/parshu_25" target="_blank">
+            <img src="icons8-instagram-48.png" alt="Example Logo" >
+        </a>
+        <a href="https://www.linkedin.com/in/parshuram-rathod/" target="_blank">
+            <img src="icons8-linkedin-48.png" alt="Example Logo" >
+        </a>
+        <a href="https://github.com/Parshuram9353" target="_blank">
+            <img src="icons8-github-logo-24.png" alt="Example Logo" width="200" height="100">
+        </a>
+        <a href="https://x.com/Parshuram_25" target="_blank">
+            <img src="icons8-twitter-50.png" alt="Example Logo" >
+        </a>
+                
+        
+
+
+        <p>&copy; 2025 Parshuram. All rights reserved.</p>
+    </div>
+
+    <script>
+        function expandImage(img) {
+            document.getElementById("largeImg").src = img.src;
+            document.getElementById("expandedImg").style.display = "flex";
+        }
+        document.getElementById("expandedImg").onclick = function() {
+            this.style.display = "none";
+        };
+    </script>
+</body>
+</html>
